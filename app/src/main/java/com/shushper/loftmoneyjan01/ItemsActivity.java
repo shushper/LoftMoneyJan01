@@ -1,6 +1,7 @@
 package com.shushper.loftmoneyjan01;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +23,13 @@ public class ItemsActivity extends AppCompatActivity {
 
         adapter = new ItemsAdapter();
 
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(getDrawable(R.drawable.divider));
+
         recycler = findViewById(R.id.recycler);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.addItemDecoration(divider);
 
 
         List<Item> items = new ArrayList<>();
