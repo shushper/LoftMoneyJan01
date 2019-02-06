@@ -11,19 +11,18 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".MainActivity">
-
-        </activity>
-
-        <activity android:name=".AddItemActivity">
+        <activity android:name=".ItemsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
+        </activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".AddItemActivity">
+
+        </activity>
     </application>
 
 </manifest>
