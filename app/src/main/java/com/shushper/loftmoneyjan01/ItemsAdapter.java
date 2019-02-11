@@ -17,11 +17,15 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     private List<Item> items = Collections.emptyList();
 
-    public void setItems(List<Item> items) {
+    void setItems(List<Item> items) {
         this.items = items;
         notifyDataSetChanged();
     }
 
+    void addItem(Item item) {
+        this.items.add(item);
+        notifyItemInserted(items.size());
+    }
 
     @Override
     public int getItemCount() {
@@ -64,7 +68,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
         }
 
-        public void bindItem(Item item) {
+        void bindItem(Item item) {
             name.setText(item.getName());
             price.setText(String.valueOf(item.getPrice()));
         }
