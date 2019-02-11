@@ -1,7 +1,14 @@
 package com.shushper.loftmoneyjan01;
 
 
+import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,14 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -24,12 +26,14 @@ import java.util.List;
  */
 public class ItemsFragment extends Fragment {
 
+    private static final String TAG = "ItemsFragment";
 
-    public static ItemsFragment newInstance(int type) {
+
+    public static ItemsFragment newInstance(String type) {
         ItemsFragment fragment = new ItemsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(KEY_TYPE, type);
+        bundle.putString(KEY_TYPE, type);
 
         fragment.setArguments(bundle);
 
@@ -37,21 +41,19 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    public static final int TYPE_UNKNOWN = 0;
-    public static final int TYPE_INCOMES = 1;
-    public static final int TYPE_EXPENSES = 2;
-
     public static final String KEY_TYPE = "type";
+
+    private String token = "$2y$10$MI9aJHOPZNR1WLHMPoRkx.6geJcwuzU/JxArRxeOoK9KXyPs3DzfG";
 
 
     private ItemsAdapter adapter;
-    private int type;
+    private String type;
 
+    private Api api;
 
     public ItemsFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -60,21 +62,14 @@ public class ItemsFragment extends Fragment {
 
         adapter = new ItemsAdapter();
 
-        Bundle arguments = getArguments();
 
-        if (arguments == null) {
-            throw new IllegalStateException("You mast set fragment type");
-
-        }
-
-        type = getArguments().getInt(KEY_TYPE, TYPE_UNKNOWN);
-
-        if (type == TYPE_UNKNOWN) {
-            throw new IllegalStateException("Unknown fragment type");
-        }
+        type = getArguments().getString(KEY_TYPE);
 
 
-        Log.d("ItemsFragment", "type = " + type);
+        Application application = getActivity().getApplication();
+        App app = (App) application;
+        api = app.getApi();
+
     }
 
     @Override
@@ -97,21 +92,26 @@ public class ItemsFragment extends Fragment {
         divider.setDrawable(requireContext().getDrawable(R.drawable.divider));
         recycler.addItemDecoration(divider);
 
-
-        adapter.setItems(createTempItems());
+        loadItems();
     }
 
+    private void loadItems() {
 
-    private List<Item> createTempItems() {
-        List<Item> items = new ArrayList<>();
-        items.add(new Item("Молоко", "70"));
-        items.add(new Item("Зубная щетка", "70"));
-        items.add(new Item("Сковородка с антипригарным покрытием", "1670"));
-        items.add(new Item("Зубочистка", "2"));
-        items.add(new Item("Tiguan", "2000000"));
-        items.add(new Item("iPhone", "80000"));
+        Call call = api.getItems(type, token);
 
-        return items;
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                List<Item> items = (List<Item>) response.body();
+                adapter.setItems(items);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e(TAG, "loadItems: ", t);
+            }
+        });
+
     }
 
 }
