@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".AddItemActivity">
 
@@ -47,14 +48,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:icon="@drawable/ic_check"
+        app:iconTint="@color/color_add_btn"
         android:id="@+id/add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="48dp"
         android:background="@null"
-        android:drawableStart="@drawable/ic_check"
         android:drawablePadding="8dp"
         android:enabled="false"
         android:text="@string/add_item_button"
