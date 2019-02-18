@@ -22,5 +22,7 @@ public interface Api {
     @POST("items/add")
     Call<Object> addItem(@Body AddItemRequest request, @Query("auth-token") String token);
 
+    @POST("items/remove")
+    Call<Object> removeItem(@Query("id") Long id, @Query("auth-token") String token);
 
 }

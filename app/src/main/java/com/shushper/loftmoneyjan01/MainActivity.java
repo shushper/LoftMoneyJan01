@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabs;
     private Toolbar toolbar;
     private FloatingActionButton fab;
+
+    private ActionMode actionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+    }
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        super.onActionModeStarted(mode);
+        actionMode = mode;
+
+        fab.hide();
+        tabs.setBackgroundColor(ContextCompat.getColor(this, R.color.action_mode_color));
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        super.onActionModeFinished(mode);
+
+        actionMode = null;
+
+        fab.show();
+        tabs.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
     }
 
     @Override
@@ -84,10 +109,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPageSelected(int position) {
+            if (actionMode != null) {
+                actionMode.finish();
+            }
+
             switch (position) {
                 case MainPagesAdapter.PAGE_INCOMES:
                 case MainPagesAdapter.PAGE_EXPENSES:
                     fab.show();
+
                     break;
 
                 case MainPagesAdapter.PAGE_BALANCE:

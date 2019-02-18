@@ -13,5 +13,7 @@
     <string name="main_tab_balance">Баланс</string>
 
 
+    <string name="action_mode_item_delete">Удалить</string>
+
     <string name="auth_enter">Войти</string>
 </resources>
