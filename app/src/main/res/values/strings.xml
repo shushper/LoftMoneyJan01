@@ -16,4 +16,8 @@
     <string name="action_mode_item_delete">Удалить</string>
 
     <string name="auth_enter">Войти</string>
+
+    <string name="balance_balance_title">Доступные финансы</string>
+    <string name="balance_expense_title">Расход</string>
+    <string name="balance_income_title">Доход</string>
 </resources>
